@@ -12,7 +12,13 @@
       "type": "shell",
       "label": "backend",
       "isBackground": true,
-      "command": "npx wrangler pages dev dist --d1=DB_CONN",
+      "command": "npx wrangler pages dev dist",
+    },
+    {
+      "type": "shell",
+      "label": "scaffold",
+      "command": "npx wrangler d1 execute DB_CONN --local --file=functions\\Data\\scaffold.sql",
+      "isBackground": true,
     }
   ]
 }
