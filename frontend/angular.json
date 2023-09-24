@@ -3,18 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "pnotes": {
+    "p-notes": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss",
-          "standalone": true
-        },
-        "@schematics/angular:directive": {
-          "standalone": true
-        },
-        "@schematics/angular:pipe": {
-          "standalone": true
+          "style": "scss"
         }
       },
       "root": "",
@@ -24,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/browser",
+            "outputPath": "dist/p-notes",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -34,8 +27,7 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              "src/_routes.json"
+              "src/assets"
             ],
             "styles": [
               "src/styles.scss"
@@ -73,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "pnotes:build:production"
+              "browserTarget": "p-notes:build:production"
             },
             "development": {
-              "browserTarget": "pnotes:build:development"
+              "browserTarget": "p-notes:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -84,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "pnotes:build"
+            "browserTarget": "p-notes:build"
           }
         },
         "test": {
@@ -105,52 +97,8 @@
             ],
             "scripts": []
           }
-        },
-        "server": {
-          "builder": "@angular-devkit/build-angular:server",
-          "options": {
-            "outputPath": "dist/server",
-            "main": "src/main.server.ts",
-            "tsConfig": "tsconfig.server.json",
-            "inlineStyleLanguage": "scss"
-          },
-          "configurations": {
-            "production": {
-              "outputHashing": "media"
-            },
-            "development": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "sourceMap": true,
-              "extractLicenses": false,
-              "vendorChunk": true
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "prerender": {
-          "builder": "@nguniversal/builders:prerender",
-          "options": {
-            "routes": [
-              "/"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "pnotes:build:production",
-              "serverTarget": "pnotes:server:production"
-            },
-            "development": {
-              "browserTarget": "pnotes:build:development",
-              "serverTarget": "pnotes:server:development"
-            }
-          },
-          "defaultConfiguration": "production"
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }
