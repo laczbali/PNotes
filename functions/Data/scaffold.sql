@@ -1,0 +1,3 @@
+CREATE TABLE IF NOT EXISTS Logs(
+    message TEXT NOT NULL
+);

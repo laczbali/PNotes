@@ -12,7 +12,7 @@
       "type": "shell",
       "label": "backend",
       "isBackground": true,
-      "command": "wrangler pages dev dist --d1=DB_CONN",
+      "command": "npx wrangler pages dev dist --d1=DB_CONN",
     }
   ]
 }
