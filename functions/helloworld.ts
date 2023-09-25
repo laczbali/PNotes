@@ -4,9 +4,14 @@ import { logs } from './Database/Models/Logs';
 
 export const onRequest: PagesFunction<Env> = async (context) => {
 
-    var db = drizzle(context.env.DB_CONN);
-    var results = await db.select().from(logs).all();
-    console.log(JSON.stringify(results));
+    type LogType = typeof logs.$inferInsert;
+    var newLog: LogType = {
+        level: 'debug',
+        message: 'log message'
+    };
+
+    const db = drizzle(context.env.DB_CONN);
+    await db.insert(logs).values(newLog);
 
     return new Response(`hello`);
 }

@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1695663605070,
-      "tag": "0000_tricky_blink",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1695663990691,
-      "tag": "0001_wise_anita_blake",
+      "when": 1695670951277,
+      "tag": "0000_peaceful_gauntlet",
       "breakpoints": true
     }
   ]

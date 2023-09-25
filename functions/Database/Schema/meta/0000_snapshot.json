@@ -1,14 +1,36 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "7cbd91bc-c754-462f-ab6a-a7bba82e5e4d",
+  "id": "da3142eb-a391-406a-b127-9d3455718eaa",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "logs": {
-      "name": "logs",
+    "Logs": {
+      "name": "Logs",
       "columns": {
-        "message": {
-          "name": "message",
+        "CreatedAt": {
+          "name": "CreatedAt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "current_timestamp"
+        },
+        "Level": {
+          "name": "Level",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "Message": {
+          "name": "Message",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "Error": {
+          "name": "Error",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

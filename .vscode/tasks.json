@@ -16,13 +16,13 @@
     },
     {
       "type": "shell",
-      "label": "db-migrate",
+      "label": "db-gen-migrations",
       "isBackground": true,
       "command": "npx drizzle-kit generate:sqlite"
     },
     {
       "type": "shell",
-      "label": "db-scaffold",
+      "label": "db-apply-migrations",
       "isBackground": true,
       "command": "npx wrangler d1 migrations apply --local DB_CONN"
     }
