@@ -4,21 +4,27 @@
   "tasks": [
     {
       "type": "shell",
-      "label": "frontend",
+      "label": "run-frontend",
       "command": "ng serve",
       "isBackground": true,
     },
     {
       "type": "shell",
-      "label": "backend",
+      "label": "run-backend",
       "isBackground": true,
       "command": "npx wrangler pages dev dist",
     },
     {
       "type": "shell",
-      "label": "scaffold",
-      "command": "npx wrangler d1 execute DB_CONN --local --file=functions\\Data\\scaffold.sql",
+      "label": "db-migrate",
       "isBackground": true,
+      "command": "npx drizzle-kit generate:sqlite"
+    },
+    {
+      "type": "shell",
+      "label": "db-scaffold",
+      "isBackground": true,
+      "command": "npx wrangler d1 migrations apply --local DB_CONN"
     }
   ]
 }
