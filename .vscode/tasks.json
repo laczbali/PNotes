@@ -4,26 +4,35 @@
   "tasks": [
     {
       "type": "shell",
+      "label": "build-frontend",
+      "command": "ng build",
+      "options": {
+        "statusbar": {
+          "hide": true
+        }
+      }
+    },
+    {
+      "type": "shell",
       "label": "run-frontend",
-      "command": "ng serve",
-      "isBackground": true,
+      "command": "ng serve"
     },
     {
       "type": "shell",
       "label": "run-backend",
-      "isBackground": true,
       "command": "npx wrangler pages dev dist",
+      "dependsOn": [
+        "build-frontend"
+      ]
     },
     {
       "type": "shell",
       "label": "db-gen-migrations",
-      "isBackground": true,
       "command": "npx drizzle-kit generate:sqlite"
     },
     {
       "type": "shell",
       "label": "db-apply-migrations",
-      "isBackground": true,
       "command": "npx wrangler d1 migrations apply --local DB_CONN"
     }
   ]
