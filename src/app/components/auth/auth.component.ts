@@ -33,7 +33,7 @@ export class AuthComponent {
 
   async handleCredentialResponse(response: any) {
     this.ngZone.run(async () => {
-      const loginResult = await this.authService.login(response.credential);
+      const loginResult = await this.authService.login(response);
       if (loginResult) {
         this.router.navigate(['/']);
       } else {

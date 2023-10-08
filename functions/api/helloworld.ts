@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/d1';
-import { Env } from "./Env";
-import { logs } from './Database/Models/Logs';
+import { Env } from "../Env";
+import { logs } from '../Database/Models/Logs';
+import { ApiResponse } from '../ApiResponse';
 
 export const onRequest: PagesFunction<Env> = async (context) => {
 
@@ -13,5 +14,5 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     const db = drizzle(context.env.DB_CONN);
     await db.insert(logs).values(newLog);
 
-    return new Response(`hello`);
+    return new ApiResponse(`hello`);
 }
