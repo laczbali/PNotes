@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/d1';
 import { Env } from "../Env";
 import { logs } from '../Database/Models/Logs';
-import { ApiResponse } from '../ApiResponse';
+import { ApiResponse } from '../utils/ApiResponse';
 
 export const onRequest: PagesFunction<Env> = async (context) => {
 

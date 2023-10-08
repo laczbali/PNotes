@@ -20,9 +20,14 @@
     {
       "type": "shell",
       "label": "run-backend",
-      "command": "npx wrangler pages dev dist",
+      "command": "npx wrangler pages dev dist"
+    },
+    {
+      "type": "shell",
+      "label": "run-stack",
       "dependsOn": [
-        "build-frontend"
+        "build-frontend",
+        "run-backend"
       ]
     },
     {
