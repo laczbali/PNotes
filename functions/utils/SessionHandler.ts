@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/d1";
 import { Env } from "../Env";
 import { googleKeys } from "../Database/Models/GoogleKeys";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import * as jose from 'jose'
 
 export class SessionHandler {
@@ -21,13 +21,22 @@ export class SessionHandler {
             throw new SessionError('Credential is missing', 'INVALID_CREDENTIALS');
         }
 
-        // TODO: key ID is present in JWT header (kid), need to find the correect key
+        // key ID is present in JWT header (kid), need to find the correect key
+        var credHeader = jose.decodeProtectedHeader(credential);
+        var keyId = credHeader.kid;
 
         // get current Google public key
+        type keyType = typeof googleKeys.$inferInsert;
         const db = drizzle(context.env.DB_CONN);
-        const storedKeys = await db.select().from(googleKeys);
+        var currentKey: keyType = (await db
+            .select()
+            .from(googleKeys)
+            .where(
+                eq(googleKeys.id, keyId)
+            ))
+            .at(0);
 
-        if (currentKey == null || currentKey == undefined || new Date(currentKey.expiresAt) < new Date()) {
+        if (currentKey == null || currentKey == undefined) {
             const remoteKeyResponse = await fetch('https://www.googleapis.com/oauth2/v3/certs');
 
             const cacheControlHeader = remoteKeyResponse.headers.get('cache-control');
@@ -41,30 +50,50 @@ export class SessionHandler {
             const expiresAtString = expiresAt.toISOString();
 
             const remoteKeyData: any = await remoteKeyResponse.json();
-            const keyDbObjects = remoteKeyData.keys.map((key: any) => {
+            const keyDbObjects: keyType[] = remoteKeyData.keys.map((key: any) => {
                 return {
-                    expiresAt: expiresAtString,
+                    id: key.kid,
                     key: JSON.stringify(key)
                 };
             });
 
             await db.insert(googleKeys).values(keyDbObjects);
+            currentKey = keyDbObjects.find((key) => key.id == keyId);
 
+            if(currentKey == null || currentKey == undefined) {
+                throw new SessionError('Key not found', 'INTERNAL_ERROR');
+            }
         }
 
-
-
         // verify JWT is signed by Google
-        const publicKey = await jose.importJWK(currentKeyData);
-
-        console.log(JSON.stringify(currentKeyData));
-
-        var verificationResult = await jose.jwtVerify(credential, publicKey);
-
-
-
+        const publicKey = await jose.importJWK(JSON.parse(currentKey.key), 'RS256');
+        var verificationResult : jose.JWTPayload = null;
+        try
+        {
+            verificationResult = (await jose.jwtVerify(credential, publicKey)).payload;
+        }
+        catch(e) {
+            throw new SessionError('Failed to validate credentials', 'INVALID_CREDENTIALS');
+        }
 
         // verify that values are correct
+        const validISSvals = ['accounts.google.com', 'https://accounts.google.com'];
+        if(!validISSvals.includes(verificationResult.iss)) {
+            throw new SessionError('Invalid issuer', 'INVALID_CREDENTIALS');
+        }
+
+        const validClientIds = ['58371505-mdr56o2n4roesstr8s8p3i69r31n1kur.apps.googleusercontent.com'];
+        if(typeof verificationResult.aud == 'string') {
+            verificationResult.aud = [verificationResult.aud];
+        }
+        if(!verificationResult.aud.every((aud: string) => validClientIds.includes(aud))) {
+            throw new SessionError('Invalid audience', 'INVALID_CREDENTIALS');
+        }
+
+        var expiresAt = new Date(verificationResult.exp * 1000);
+        if(expiresAt < new Date()) {
+            throw new SessionError('Expired credential', 'INVALID_CREDENTIALS');
+        }
 
         // create new session
 

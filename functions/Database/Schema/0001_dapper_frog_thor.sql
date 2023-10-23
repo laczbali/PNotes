@@ -1,5 +1,4 @@
 CREATE TABLE `GoogleKeys` (
-	`Id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`ExpiresAt` text NOT NULL,
+	`Id` text PRIMARY KEY NOT NULL,
 	`Key` text
 );

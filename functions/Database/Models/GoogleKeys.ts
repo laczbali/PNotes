@@ -3,11 +3,8 @@ import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const googleKeys = sqliteTable("GoogleKeys", {
 
-    id: integer('Id')
-        .primaryKey({ autoIncrement: true }),
-
-    expiresAt: text('ExpiresAt')
-        .notNull(),
+    id: text('Id')
+        .primaryKey(),
 
     key: text('Key')
 

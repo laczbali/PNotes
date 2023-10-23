@@ -9,17 +9,9 @@
       "columns": {
         "Id": {
           "name": "Id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "ExpiresAt": {
-          "name": "ExpiresAt",
           "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "primaryKey": true,
+          "notNull": true
         },
         "Key": {
           "name": "Key",
